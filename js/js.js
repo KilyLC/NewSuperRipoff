@@ -11,7 +11,7 @@ function DrawRect(x, y, w, h, color)
 }
 
 // Rectangle object
-function Rectangle(x = 0, y = 0, w = 0, h = 0, color = "white")
+function Rectangle(x, y, w, h, color)
 {
   // Constructors elements
   this.x = x;
@@ -22,15 +22,68 @@ function Rectangle(x = 0, y = 0, w = 0, h = 0, color = "white")
 
   // Other variables
   this.speed = 0;
+  this.moveLeft = false;
+  this.moveRight = false;
+}
+
+// Function to get the key (down)
+function ManageKeyDown(e)
+{
+  e = e || window.event;
+
+  // Space Key
+  if (e.keyCode == "32")
+  {
+
+  }
+  // "A" Key
+  if (e.keyCode == "65")
+  {
+    player.moveLeft = true;
+  }
+  // "D" Key
+  if (e.keyCode == "68")
+  {
+    player.moveRight = true;
+  }
+}
+
+// Function to get the key (up)
+function ManageKeyUp(e)
+{
+  e = e || window.event;
+
+  // Space Key
+  if (e.keyCode == "32")
+  {
+
+  }
+  // "A" Key
+  if (e.keyCode == "65")
+  {
+    player.moveLeft = false;
+  }
+  // "D" Key
+  if (e.keyCode == "68")
+  {
+    player.moveRight = false;
+  }
 }
 
 // Player object
-var player = new Rectangle(0, 0, 50, 50, "lightgreen");
+var player = new Rectangle(0, canvas.height - 50, 50, 50, "lightgreen");
 
 // The game loop
 function Update()
 {
+  if (player.moveLeft)
+  {
 
+  }
+  if (player.moveRight)
+  {
+
+  }
 }
 
 // Where all the elements will be drawn
