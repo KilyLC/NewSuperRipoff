@@ -4,14 +4,14 @@ const ctx = canvas.getContext("2d");
 var framesPerSecond = 60;
 
 // It's like .fillRect but with color
-function DrawRect(x, y, w, h, color)
+function DrawRect(x = 0, y = 0, w = 0, h = 0, color = "white")
 {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, w, h);
 }
 
 // Rectangle object
-function Rectangle(x, y, w, h, color)
+function Rectangle(x = 0, y = 0, w = 0, h = 0, color = "white")
 {
   // Constructors elements
   this.x = x;
@@ -21,20 +21,38 @@ function Rectangle(x, y, w, h, color)
   this.color = color;
 
   // Other variables
-  this.speed = 0;
+  this.speed = 5;
+  this.gravity = 5;
   this.moveLeft = false;
   this.moveRight = false;
+  this.isGrounded = false;
+
+  // Methods
+  this.Move = Move;
 }
+
+// Rectangle function
+function Move(x = 0, y = 0)
+{
+  this.x += x;
+  this.y += y;
+}
+
+// Var to check if the jump key is down
+var jumpIsDown = false;
 
 // Function to get the key (down)
 function ManageKeyDown(e)
 {
   e = e || window.event;
 
-  // Space Key
-  if (e.keyCode == "32")
+  // "W" Key
+  if (e.keyCode == "87")
   {
+    jumpIsDown = true;
 
+    gravity = player.gravity;
+    player.isGrounded = false;
   }
   // "A" Key
   if (e.keyCode == "65")
@@ -53,10 +71,10 @@ function ManageKeyUp(e)
 {
   e = e || window.event;
 
-  // Space Key
-  if (e.keyCode == "32")
+  // "W" Key
+  if (e.keyCode == "87")
   {
-
+    jumpIsDown = false;
   }
   // "A" Key
   if (e.keyCode == "65")
@@ -73,16 +91,30 @@ function ManageKeyUp(e)
 // Player object
 var player = new Rectangle(0, canvas.height - 50, 50, 50, "lightgreen");
 
+// Temp gravity
+var gravity = player.gravity;
+
 // The game loop
 function Update()
 {
   if (player.moveLeft)
   {
-
+    player.Move(-player.speed);
   }
   if (player.moveRight)
   {
+    player.Move(player.speed);
+  }
 
+  if (player.y >= canvas.height - player.height && !jumpIsDown)
+  {
+    isGrounded = true;
+  }
+
+  if (!isGrounded)
+  {
+    player.y -= gravity;
+    gravity--;
   }
 }
 
