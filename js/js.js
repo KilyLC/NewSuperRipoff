@@ -22,10 +22,11 @@ function Rectangle(x = 0, y = 0, w = 0, h = 0, color = "white")
 
   // Other variables
   this.speed = 5;
-  this.gravity = 5;
+  this.gravity = 15;
   this.moveLeft = false;
   this.moveRight = false;
   this.isGrounded = false;
+  this.sprite = new Image();
 
   // Methods
   this.Move = Move;
@@ -51,8 +52,11 @@ function ManageKeyDown(e)
   {
     jumpIsDown = true;
 
-    gravity = player.gravity;
-    player.isGrounded = false;
+    if (player.isGrounded)
+    {
+      gravity = player.gravity;
+      player.isGrounded = false;
+    }
   }
   // "A" Key
   if (e.keyCode == "65")
@@ -91,6 +95,10 @@ function ManageKeyUp(e)
 // Player object
 var player = new Rectangle(0, canvas.height - 50, 50, 50, "lightgreen");
 
+// Background object
+var background = new Rectangle(0, 0, canvas.width, canvas.height);
+background.sprite.src = "img/background.jpg";
+
 // Temp gravity
 var gravity = player.gravity;
 
@@ -106,23 +114,31 @@ function Update()
     player.Move(player.speed);
   }
 
-  if (player.y >= canvas.height - player.height && !jumpIsDown)
+  // Ground collision
+  if (player.y >= canvas.height - player.height)
   {
-    isGrounded = true;
+    player.isGrounded = true;
+    player.y = canvas.height - player.height;
   }
 
-  if (!isGrounded)
+  if (jumpIsDown && player.isGrounded)
+  {
+    player.isGrounded = false;
+  }
+
+  if (!player.isGrounded)
   {
     player.y -= gravity;
     gravity--;
+    console.log(gravity);
   }
 }
 
 // Where all the elements will be drawn
 function Render()
 {
-  // Resets the background color
-  DrawRect(0, 0, 1000, 500, "white");
+  // Draws the background
+  ctx.drawImage(background.sprite, background.x, background.y, background.width, background.height);
 
   DrawRect(player.x, player.y, player.width, player.height, player.color);
 }
