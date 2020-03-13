@@ -124,8 +124,26 @@ function Update()
   obstacle.Top = obstacle.y;
   obstacle.Bottom = obstacle.y + obstacle.height;
 
-  // Movement + Left Collision
-  if (player.moveLeft && player.Left > obstacle.Right)
+  
+  if (player.Left < obstacle.Right && player.Bottom > obstacle.Top && player.Right >= obstacle.Right)
+  {
+    player.moveLeft = false;
+  }
+
+  if (player.Right > obstacle.Left && player.Bottom > obstacle.Top && player.Left <= obstacle.Left)
+  {
+    player.moveRight = false;
+  }
+
+  // Obstacle top collision
+  if (player.Bottom > obstacle.Top && player.Left < obstacle.Right && player.Right > obstacle.Left && player.Top < obstacle.Bottom)
+  {
+    player.isGrounded = true;
+    player.y = obstacle.y - player.height;
+    jumpIsDown = false;
+  }
+
+  if (player.moveLeft)
   {
     player.Move(-player.speed);
   }
